@@ -977,7 +977,16 @@ jspb.utils.byteSourceToUint8Array = function(data) {
 
   if (data.constructor === String) {
     data = /** @type {string} */(data);
-    return goog.crypt.base64.decodeStringToUint8Array(data);
+    try{
+        return goog.crypt.base64.decodeStringToUint8Array(data);
+    }
+    catch(err){
+	      var arr= new Uint8Array(data.length);
+	      data.split("").forEach(function(a,b){
+		        arr[b]=a.charCodeAt();
+	      });
+	      return arr;
+    }
   }
 
   goog.asserts.fail('Type not convertible to Uint8Array.');
